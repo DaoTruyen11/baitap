@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="Admin/fragments/head ::head"></head>
+<body>
+<main>
+    <div th:replace="Admin/fragments/sidebar :: sidebar"></div>
+    <div class="container">
+        <h1>Categories List</h1>
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/categories/add}" class="btn btn-primary mb-3">Add New Category</a>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.categoryId}"></td>
+                <td th:text="${category.categoryName}"></td>
+                <td th:text="${category.categoryDescription}"></td>
+                <td>
+                    <div sec:authorize="hasAuthority('ADMIN')">
+                        <a th:href="@{/categories/edit/{id}(id=${category.categoryId})}" class="btn btn-success btn-sm">Edit</a>
+                        <a th:href="@{/categories/delete/{id}(id=${category.categoryId})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<script th:src="@{/js/admin/app.js}"></script>
+</body>
+</html>
